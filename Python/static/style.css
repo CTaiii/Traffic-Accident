@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+
+}
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.chart-container {
+    display: inline-block;
+    text-align: center;
+}
+img {
+    width: 100%;
+    height: auto;
+}
+table {
+    margin: 0 auto; /* Căn giữa bảng */
+    border-collapse: collapse;
+    width: 80%;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+th {
+    background-color: #f4f4f4;
+}
+

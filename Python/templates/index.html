@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng Dụng Phân Tích và Dự Đoán</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        function showForm(formId) {
+            // Ẩn tất cả các form dự đoán
+            document.querySelectorAll('.predict-form').forEach(form => form.classList.add('hidden'));
+            // Hiện form dự đoán được chọn
+            document.getElementById(formId).classList.remove('hidden');
+        }
+    </script>
+</head>
+<body>
+    <h1>Ứng Dụng Phân Tích và Dự Đoán</h1>
+    <a href="/" style="display: inline-block; margin-bottom: 20px; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">Quay lại trang đầu</a>
+
+    <form action="/analyze" method="post">
+        <button name="analyze_data" type="submit">Phân Tích Dữ Liệu</button>
+    </form>
+
+    <form action="/cluster" method="post">
+        <button name="cluster_data" type="submit">Gom Cụm Dữ Liệu</button>
+    </form>
+
+    <button onclick="showForm('predict_TH_form')">Dự Đoán Thiệt Hại</button>
+    <button onclick="showForm('predict_NN_form')">Dự Đoán Nguyên Nhân</button>
+    <button onclick="showForm('predict_cluster_form')">Dự Đoán Cụm</button>
+
+    <form id="predict_TH_form" class="predict-form hidden" action="/predict_TH" method="post">
+        <h2>Dự Đoán Thiệt Hại</h2>
+        <label for="Gio">Giờ:</label>
+        <input type="text" id="Gio" name="Gio" required>
+        <label for="Duong">Đường:</label>
+        <input type="text" id="Duong" name="Duong" required>
+        <label for="Quan">Quận:</label>
+        <input type="text" id="Quan" name="Quan" required>
+        <label for="Tuoi">Tuổi:</label>
+        <input type="number" id="Tuoi" name="Tuoi" required>
+        <label for="NguyenNhan">Nguyên Nhân:</label>
+        <input type="text" id="NguyenNhan" name="NguyenNhan" required>
+        <button type="submit">Dự Đoán</button>
+    </form>
+
+    <form id="predict_NN_form" class="predict-form hidden" action="/predict_NN" method="post">
+        <h2>Dự Đoán Nguyên Nhân</h2>
+        <label for="Gio">Giờ:</label>
+        <input type="text" id="Gio" name="Gio" required>
+        <label for="Duong">Đường:</label>
+        <input type="text" id="Duong" name="Duong" required>
+        <label for="Quan">Quận:</label>
+        <input type="text" id="Quan" name="Quan" required>
+        <label for="Tuoi">Tuổi:</label>
+        <input type="number" id="Tuoi" name="Tuoi" required>
+        <label for="ThietHai">Thiệt hại:</label>
+        <input type="text" id="ThietHai" name="ThietHai" required>
+        <button type="submit">Dự Đoán</button>
+    </form>
+
+    <form id="predict_cluster_form" class="predict-form hidden" action="/predict_cluster" method="post">
+        <h2>Dự Đoán Cụm</h2>
+        <label for="Gio">Giờ:</label>
+        <input type="text" id="Gio" name="Gio" required>
+        <label for="Duong">Đường:</label>
+        <input type="text" id="Duong" name="Duong" required>
+        <label for="Quan">Quận:</label>
+        <input type="text" id="Quan" name="Quan" required>
+        <label for="Tuoi">Tuổi:</label>
+        <input type="number" id="Tuoi" name="Tuoi" required>
+        <label for="ThietHai">Thiệt hại:</label>
+        <input type="text" id="ThietHai" name="ThietHai" required>
+        <label for="NguyenNhan">Nguyên Nhân:</label>
+        <input type="text" id="NguyenNhan" name="NguyenNhan" required>
+        <button type="submit">Dự Đoán Cụm</button>
+    </form>
+
+    {% if result %}
+    <h2>Kết Quả Phân Tích Tần Suất</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nguyên Nhân</th>
+                <th>Đường</th>
+                <th>Tần suất</th>
+                <th>Tổng số lần xuất hiện</th>
+                <th>Tần suất (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in result %}
+            <tr>
+                <td>{{ item['Nguyên nhân'] }}</td>
+                <td>{{ item['Đường'] }}</td>
+                <td>{{ item['Tần suất'] }}</td>
+                <td>{{ item['Tổng số lần xuất hiện'] }}</td>
+                <td>{{ item['Tần suất (%)'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if cluster_info %}
+    <h2>Kết Quả Gom Cụm</h2>
+    <ul>
+        {% for cluster, info in cluster_info.items() %}
+        <li>{{ cluster }}: Số lượng: {{ info['count'] }}</li>
+        {% endfor %}
+    </ul>
+    <h3>Biểu Đồ Phân Tán Các Cụm</h3>
+    <img src="data:image/png;base64,{{ plot_img }}" alt="Biểu Đồ Phân Tán">
+    {% endif %}
+
+    {% if prediction_TH %}
+    <h2>Kết Quả Dự Đoán Thiệt Hại</h2>
+    <p>{{ prediction_TH }}</p>
+    {% endif %}
+
+    {% if prediction_NN %}
+    <h2>Kết Quả Dự Đoán Nguyên Nhân</h2>
+    <p>{{ prediction_NN }}</p>
+    {% endif %}
+
+    {% if prediction_cluster %}
+    <h2>Kết Quả Dự Đoán Cụm</h2>
+    <p>{{ prediction_cluster }}</p>
+    {% endif %}
+
+    {% if error %}
+    <h2>Lỗi</h2>
+    <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
