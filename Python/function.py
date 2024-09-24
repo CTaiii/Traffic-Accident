@@ -8,9 +8,7 @@ import io
 import base64
 from sklearn.preprocessing import LabelEncoder
 import pickle
-import numpy as np
-
-from training_DDC import label_encoders
+from training_DDC import label_encoders, df_cleaned
 
 
 # Đọc dữ liệu từ file Excel
@@ -106,53 +104,37 @@ def predict_reason(input_data):
     return prediction[0]
 
 
-def preprocess_input(input_data):
-    """Tiền xử lý dữ liệu đầu vào để phù hợp với mô hình phân cụm"""
-    damage_mapping = {'Nhẹ': 1, 'Nặng': 2, 'Rất nặng': 3}
-    df = pd.DataFrame([input_data])
+# Đọc mô hình và các công cụ từ file
+with open('data/model_DDC.pkl', 'rb') as file:
+    model_DDC = pickle.load(file)
+with open('data/scaler.pkl', 'rb') as file:
+    scaler = pickle.load(file)
+with open('data/label_encoders.pkl', 'rb') as file:
+    label_encoders = pickle.load(file)
 
-    # Chuyển đổi các nhãn thành mã số dựa trên encoder
-    for column in df.columns:
-        if df[column].dtype == 'object':
-            if column in label_encoders:
-                df[column] = label_encoders[column].transform(df[column])
-            else:
-                # Nếu chưa có encoder cho cột này, tạo mới
-                encoder = LabelEncoder()
-                df[column] = encoder.fit_transform(df[column])
-                label_encoders[column] = encoder
+# Lưu thông tin cột vào file
+with open('data/columns.pkl', 'wb') as file:
+    pickle.dump(df_cleaned.columns.tolist(), file)
 
-    # Chuyển đổi cột 'ThietHai' nếu cần
-    if 'ThietHai' in df.columns:
-        df['ThietHai'] = df['ThietHai'].map(damage_mapping)
+# Lưu thông tin cột vào biến toàn cục
+columns = df_cleaned.columns.tolist()  # Đảm bảo biến columns chứa danh sách các cột
 
-    return df
+# Hàm tiền xử lý dữ liệu
+def preprocess_input(input_data, encoder_dict, scaler):
+    # Chuyển đổi dữ liệu đầu vào thành DataFrame
+    input_df = pd.DataFrame([input_data])
 
+    # Sử dụng LabelEncoder để chuyển đổi các giá trị phân loại
+    for column, encoder in encoder_dict.items():
+        input_df[column] = encoder.transform(input_df[column])
 
-def predict_cluster(input_data):
-    """Dự đoán cụm dựa trên dữ liệu đầu vào"""
-    # Tải các công cụ đã lưu
-    with open('data/scaler.pkl', 'rb') as file:
-        scaler = pickle.load(file)
-    with open('data/label_encoders.pkl', 'rb') as file:
-        label_encoders = pickle.load(file)
-    with open('data/model_DDC.pkl', 'rb') as file:
-        model_DDC = pickle.load(file)
+    # Nếu cần thiết, thêm bước xử lý cho các cột còn lại, ví dụ:
+    # input_df['Gio'] = input_df['Gio'].map({'Sáng': 0, 'Trưa': 1, 'Chiều': 2, 'Tối': 3, 'Khuya': 4})
 
-    # Tiền xử lý dữ liệu đầu vào
-    input_df = preprocess_input(input_data)
+    # Chọn các cột cần thiết
+    # input_df = input_df[['Duong', 'Gio', 'Quan', 'Tuoi', 'ThietHai', 'NguyenNhan']]
 
-    # Đảm bảo dữ liệu đầu vào có tất cả các cột giống như dữ liệu huấn luyện
-    all_columns = pd.read_excel('data/All.xlsx').columns
-    for column in all_columns:
-        if column not in input_df.columns:
-            input_df[column] = 0
-
-    input_df = input_df.reindex(columns=all_columns, fill_value=0)
-
-    # Tiến hành tiền xử lý dữ liệu
+    # Chuẩn hóa dữ liệu
     input_scaled = scaler.transform(input_df)
 
-    # Dự đoán cụm cho dữ liệu đầu vào
-    cluster_prediction = model_DDC.fit_predict(input_scaled)
-    return cluster_prediction[0]
+    return input_df

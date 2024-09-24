@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from function import read_excel, analyze_frequency, cluster_and_save, predict_damages, predict_reason, predict_cluster
+from function import read_excel, analyze_frequency, cluster_and_save, predict_damages, predict_reason, preprocess_input
 import pandas as pd
 import pickle
 
@@ -65,19 +65,50 @@ def predict_NN():
         return render_template('index.html', error="Đã xảy ra lỗi: " + str(e))
 
 @app.route('/predict_cluster', methods=['POST'])
-def predict_cluster_route():
-    input_data = {
-        'Gio': request.form.get('Gio'),
-        'Duong': request.form.get('Duong'),
-        'Quan': request.form.get('Quan'),
-        'Tuoi': int(request.form.get('Tuoi')),
-        'NguyenNhan': request.form.get('NguyenNhan')
-    }
+def predict_cluster():
     try:
-        cluster = predict_cluster(input_data)
-        return render_template('index.html', prediction_cluster=f"Cụm dự đoán: {cluster + 1}")
+        # Lấy dữ liệu từ form
+        input_data = {
+            'Gio': request.form.get('Gio'),
+            'Duong': request.form.get('Duong'),
+            'Quan': request.form.get('Quan'),
+            'Tuoi': int(request.form.get('Tuoi')),
+            'ThietHai': request.form.get('ThietHai'),
+            'NguyenNhan': request.form.get('NguyenNhan')
+        }
+
+        # In dữ liệu nhận được từ form
+        print("Data received from HTML form:")
+        for key, value in input_data.items():
+            print(f"{key}: {value}")
+
+        # Tiền xử lý dữ liệu
+        input_df = preprocess_input(input_data, encoder_dict, scaler)
+
+        # Chuyển đổi dữ liệu thành định dạng mà mô hình dự đoán yêu cầu
+        input_scaled = scaler.transform(input_df)
+
+        # Dự đoán cụm
+        cluster = model_DDC.predict(input_scaled)
+
+        return f"Dữ liệu thuộc cụm: {cluster[0]}"
+
     except Exception as e:
+        print(f"An error occurred during prediction: {e}")
         return render_template('index.html', error="Đã xảy ra lỗi: " + str(e))
 
 if __name__ == '__main__':
+    # Tải các encoder, scaler và mô hình từ file
+    with open('data/label_encoders.pkl', 'rb') as f:
+        encoder_dict = pickle.load(f)
+
+    with open('data/scaler.pkl', 'rb') as f:
+        scaler = pickle.load(f)
+
+    with open('data/model_DDC.pkl', 'rb') as f:
+        model_DDC = pickle.load(f)
+
+    with open('data/columns.pkl', 'rb') as file:
+        columns = pickle.load(file)
+
     app.run(debug=True)

@@ -16,6 +16,29 @@
             // Hiện form dự đoán được chọn
             document.getElementById(formId).classList.remove('hidden');
         }
+
+        function predictCluster(event) {
+            event.preventDefault(); // Ngăn chặn gửi form mặc định
+
+            // Lấy dữ liệu từ form
+            const formData = new FormData(event.target);
+
+            fetch('/predict_cluster', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hiển thị kết quả dưới form
+                const resultDiv = document.getElementById('cluster_prediction_result');
+                resultDiv.innerHTML = `<h2>Kết Quả Dự Đoán Cụm</h2><p>${data.prediction_cluster}</p>`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const resultDiv = document.getElementById('cluster_prediction_result');
+                resultDiv.innerHTML = `<h2>Lỗi</h2><p>${error}</p>`;
+            });
+        }
     </script>
 </head>
 <body>
@@ -64,7 +87,7 @@
         <button type="submit">Dự Đoán</button>
     </form>
 
-    <form id="predict_cluster_form" class="predict-form hidden" action="/predict_cluster" method="post">
+    <form id="predict_cluster_form" class="predict-form hidden" onsubmit="predictCluster(event)">
         <h2>Dự Đoán Cụm</h2>
         <label for="Gio">Giờ:</label>
         <input type="text" id="Gio" name="Gio" required>
@@ -80,6 +103,8 @@
         <input type="text" id="NguyenNhan" name="NguyenNhan" required>
         <button type="submit">Dự Đoán Cụm</button>
     </form>
+
+    <div id="cluster_prediction_result"></div> <!-- Khu vực hiển thị kết quả dự đoán -->
 
     {% if result %}
     <h2>Kết Quả Phân Tích Tần Suất</h2>
