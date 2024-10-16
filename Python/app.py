@@ -3,7 +3,7 @@ from function import read_excel, analyze_frequency, cluster_and_save, predict_da
 import pandas as pd
 import pickle
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='templates')
 
 @app.route('/')
 def index():

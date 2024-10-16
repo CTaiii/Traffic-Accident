@@ -4,108 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ứng Dụng Phân Tích và Dự Đoán</title>
-    <style>
-        .hidden {
-            display: none;
-        }
-    </style>
-    <script>
-        function showForm(formId) {
-            // Ẩn tất cả các form dự đoán
-            document.querySelectorAll('.predict-form').forEach(form => form.classList.add('hidden'));
-            // Hiện form dự đoán được chọn
-            document.getElementById(formId).classList.remove('hidden');
-        }
-
-        function predictCluster(event) {
-            event.preventDefault(); // Ngăn chặn gửi form mặc định
-
-            // Lấy dữ liệu từ form
-            const formData = new FormData(event.target);
-
-            fetch('/predict_cluster', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Hiển thị kết quả dưới form
-                const resultDiv = document.getElementById('cluster_prediction_result');
-                resultDiv.innerHTML = `<h2>Kết Quả Dự Đoán Cụm</h2><p>${data.prediction_cluster}</p>`;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                const resultDiv = document.getElementById('cluster_prediction_result');
-                resultDiv.innerHTML = `<h2>Lỗi</h2><p>${error}</p>`;
-            });
-        }
-    </script>
+    <link rel="stylesheet" href="style.css">
+    <script src="scripts.js" defer></script> 
 </head>
 <body>
-    <h1>Ứng Dụng Phân Tích và Dự Đoán</h1>
-    <a href="/" style="display: inline-block; margin-bottom: 20px; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">Quay lại trang đầu</a>
+    <div class="container">
+        <h1><a href="/" style="text-decoration: none; color: inherit;">Tổng quan</a></h1>
+        <div>
+            <select id="select_box_1">
+                <option value="">Chọn nguyên nhân, tuổi hoặc giờ</option>
+                <option value="nguyen_nhan">Nguyên Nhân</option>
+                <option value="tuoi">Tuổi</option>
+                <option value="gio">Giờ</option>
+            </select>
+        </div>
+        <div>
+            <div id="display_text">
+                <div class="display_title"> Tổng
+                    <div id="col1"></div>
+                </div>
+                <div class="display_title"> 2023
+                    <div id="col2"></div>
+                </div>
+                <div class="display_title"> 2022
+                    <div id="col3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h1><a href="" style="text-decoration: none; color: inherit;">Ứng dụng</a></h1>
+        <form action="/analyze" method="post">
+            <button name="analyze_data" type="submit">Phân Tích Dữ Liệu</button>
+        </form>
 
-    <form action="/analyze" method="post">
-        <button name="analyze_data" type="submit">Phân Tích Dữ Liệu</button>
-    </form>
+        <form action="/cluster" method="post">
+            <button name="cluster_data" type="submit">Gom Cụm Dữ Liệu</button>
+        </form>
 
-    <form action="/cluster" method="post">
-        <button name="cluster_data" type="submit">Gom Cụm Dữ Liệu</button>
-    </form>
+        <button onclick="showForm('predict_TH_form')">Dự Đoán Thiệt Hại</button>
+        <button onclick="showForm('predict_NN_form')">Dự Đoán Nguyên Nhân</button>
 
-    <button onclick="showForm('predict_TH_form')">Dự Đoán Thiệt Hại</button>
-    <button onclick="showForm('predict_NN_form')">Dự Đoán Nguyên Nhân</button>
-    <button onclick="showForm('predict_cluster_form')">Dự Đoán Cụm</button>
+        <form id="predict_TH_form" class="predict-form hidden" action="/predict_TH" method="post">
+            <h2>Dự Đoán Thiệt Hại</h2>
+            <label for="Gio">Giờ:</label>
+            <input type="text" id="Gio" name="Gio" required>
+            <label for="Duong">Đường:</label>
+            <input type="text" id="Duong" name="Duong" required>
+            <label for="Quan">Quận:</label>
+            <input type="text" id="Quan" name="Quan" required>
+            <label for="Tuoi">Tuổi:</label>
+            <input type="number" id="Tuoi" name="Tuoi" required>
+            <label for="NguyenNhan">Nguyên Nhân:</label>
+            <input type="text" id="NguyenNhan" name="NguyenNhan" required>
+            <button type="submit">Dự Đoán</button>
+        </form>
 
-    <form id="predict_TH_form" class="predict-form hidden" action="/predict_TH" method="post">
-        <h2>Dự Đoán Thiệt Hại</h2>
-        <label for="Gio">Giờ:</label>
-        <input type="text" id="Gio" name="Gio" required>
-        <label for="Duong">Đường:</label>
-        <input type="text" id="Duong" name="Duong" required>
-        <label for="Quan">Quận:</label>
-        <input type="text" id="Quan" name="Quan" required>
-        <label for="Tuoi">Tuổi:</label>
-        <input type="number" id="Tuoi" name="Tuoi" required>
-        <label for="NguyenNhan">Nguyên Nhân:</label>
-        <input type="text" id="NguyenNhan" name="NguyenNhan" required>
-        <button type="submit">Dự Đoán</button>
-    </form>
+        <form id="predict_NN_form" class="predict-form hidden" action="/predict_NN" method="post">
+            <h2>Dự Đoán Nguyên Nhân</h2>
+            <label for="Gio">Giờ:</label>
+            <input type="text" id="Gio" name="Gio" required>
+            <label for="Duong">Đường:</label>
+            <input type="text" id="Duong" name="Duong" required>
+            <label for="Quan">Quận:</label>
+            <input type="text" id="Quan" name="Quan" required>
+            <label for="Tuoi">Tuổi:</label>
+            <input type="number" id="Tuoi" name="Tuoi" required>
+            <label for="ThietHai">Thiệt hại:</label>
+            <input type="text" id="ThietHai" name="ThietHai" required>
+            <button type="submit">Dự Đoán</button>
+        </form>
 
-    <form id="predict_NN_form" class="predict-form hidden" action="/predict_NN" method="post">
-        <h2>Dự Đoán Nguyên Nhân</h2>
-        <label for="Gio">Giờ:</label>
-        <input type="text" id="Gio" name="Gio" required>
-        <label for="Duong">Đường:</label>
-        <input type="text" id="Duong" name="Duong" required>
-        <label for="Quan">Quận:</label>
-        <input type="text" id="Quan" name="Quan" required>
-        <label for="Tuoi">Tuổi:</label>
-        <input type="number" id="Tuoi" name="Tuoi" required>
-        <label for="ThietHai">Thiệt hại:</label>
-        <input type="text" id="ThietHai" name="ThietHai" required>
-        <button type="submit">Dự Đoán</button>
-    </form>
-
-    <form id="predict_cluster_form" class="predict-form hidden" onsubmit="predictCluster(event)">
-        <h2>Dự Đoán Cụm</h2>
-        <label for="Gio">Giờ:</label>
-        <input type="text" id="Gio" name="Gio" required>
-        <label for="Duong">Đường:</label>
-        <input type="text" id="Duong" name="Duong" required>
-        <label for="Quan">Quận:</label>
-        <input type="text" id="Quan" name="Quan" required>
-        <label for="Tuoi">Tuổi:</label>
-        <input type="number" id="Tuoi" name="Tuoi" required>
-        <label for="ThietHai">Thiệt hại:</label>
-        <input type="text" id="ThietHai" name="ThietHai" required>
-        <label for="NguyenNhan">Nguyên Nhân:</label>
-        <input type="text" id="NguyenNhan" name="NguyenNhan" required>
-        <button type="submit">Dự Đoán Cụm</button>
-    </form>
-
-    <div id="cluster_prediction_result"></div> <!-- Khu vực hiển thị kết quả dự đoán -->
-
+        <div id="cluster_prediction_result"></div> <!-- Khu vực hiển thị kết quả dự đoán -->
+    </div>
     {% if result %}
     <h2>Kết Quả Phân Tích Tần Suất</h2>
     <table>

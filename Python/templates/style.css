@@ -1,0 +1,130 @@
+body {
+    font-family: Arial, sans-serif;
+
+}
+.container {
+    max-width: 100%;
+    margin: auto;
+    padding: 20px;
+    height: auto;
+    min-height: 1000px;
+}
+.chart-container {
+    display: inline-block;
+    text-align: center;
+}
+
+.placeholder {
+    
+    height: 1000px;
+    background-color: #e0e0e0; /* Màu nền cho khung */
+    margin-bottom: 20px; /* Khoảng cách dưới khung */
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+table {
+    margin: 0 auto; /* Căn giữa bảng */
+    border-collapse: collapse;
+    width: 80%;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+th {
+    background-color: #f4f4f4;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+h2 {
+    color: #555;
+}
+
+button {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.predict-form {
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Căn giữa các tiêu đề trong display_title */
+.display_title {
+    z-index: 10; 
+    font-size: 50px;
+    text-align: center;
+    position: relative; 
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Đặt chiều cao cố định nếu cần */
+    font-weight: bold;
+}
+
+/* CSS cho phần tử col1, col2, col3 */
+#col1, #col2, #col3 {
+    font-size: 20px;
+    font-weight: 200;
+    line-height: 1.5;
+}
+
+
+/* Căn chỉnh các khối văn bản trong display_text */
+#display_text {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-top: 20px;
+}
+
+/* Cấu hình các khối trong display_text */
+#display_text div {
+    flex: 1; 
+    text-align: justify;
+    height: 700px;
+    padding: 3%;
+    position: relative; 
+    z-index: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* Căn giữa các cột với đường viền */
+#display_text div:nth-child(2) {
+    flex: 0 0 28%;
+    border-left: dashed;
+    border-right: dashed;
+    
+}
