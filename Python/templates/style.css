@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-
+    height: 1900px;
 }
 .container {
     max-width: 100%;
@@ -92,12 +92,23 @@ button:hover {
 }
 
 /* CSS cho phần tử col1, col2, col3 */
-#col1, #col2, #col3 {
+#col_display{
     font-size: 20px;
     font-weight: 200;
-    line-height: 1.5;
+    line-height: 2;
 }
 
+#img{
+    max-width:100%; 
+    height:auto;
+}
+
+
+
+#img_chart {
+    width: 60%;
+    margin: auto;
+}
 
 /* Căn chỉnh các khối văn bản trong display_text */
 #display_text {
@@ -105,7 +116,7 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-    margin-top: 20px;
+    
 }
 
 /* Cấu hình các khối trong display_text */
@@ -114,6 +125,7 @@ button:hover {
     text-align: justify;
     height: 700px;
     padding: 3%;
+    padding-top: 0%;
     position: relative; 
     z-index: 1; 
     display: flex;
@@ -123,8 +135,85 @@ button:hover {
 
 /* Căn giữa các cột với đường viền */
 #display_text div:nth-child(2) {
-    flex: 0 0 28%;
-    border-left: dashed;
-    border-right: dashed;
-    
+    flex: 0 0 30%;
+    padding-top: 1%;
+}
+
+/* Căn chỉnh các nút theo hàng ngang */
+.button-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px; /* Khoảng cách với form bên dưới */
+}
+
+/* Căn chỉnh form để chúng nằm bên dưới */
+.predict-form {
+    margin-top: 20px;
+}
+
+/* Style cho các nút */
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.cluster_prediction_result{
+    height: 300px;
+}
+
+.features{
+    height: 600px;
+}
+
+.image-box {
+    position: relative;
+    display: inline-block;
+    width: 400px; /* Điều chỉnh kích thước bức ảnh */
+    height: 300px; /* Điều chỉnh kích thước bức ảnh */
+    text-align: center;
+}
+
+#imgElement {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh vừa với container */
+    border: 1px solid #ccc; /* Thêm đường viền cho hình ảnh */
+    border-radius: 5px; /* Làm bo góc cho hình ảnh */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Thêm bóng cho hình ảnh */
+}
+
+.circle-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    cursor: pointer;
+    display: flex; /* Đảm bảo căn giữa nội dung */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    font-size: 20px;
+    line-height: 1;
+}
+
+.prev-button {
+    left: -20px; /* Canh trái bức ảnh */
+}
+
+.next-button {
+    right: -20px; /* Canh phải bức ảnh */
+}
+
+.circle-button:hover {
+    background-color: rgba(0, 0, 0, 0.8); /* Đổi màu khi hover */
 }

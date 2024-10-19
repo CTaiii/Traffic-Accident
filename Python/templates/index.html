@@ -10,41 +10,49 @@
 <body>
     <div class="container">
         <h1><a href="/" style="text-decoration: none; color: inherit;">Tổng quan</a></h1>
+        
         <div>
             <select id="select_box_1">
                 <option value="">Chọn nguyên nhân, tuổi hoặc giờ</option>
                 <option value="nguyen_nhan">Nguyên Nhân</option>
                 <option value="tuoi">Tuổi</option>
                 <option value="gio">Giờ</option>
+                <option value="hau_qua">Hậu quả</option>
+                <option value="de_xuat">Đề xuất</option>
+            </select>
+
+            <select id="select_box_2">
+                <option value="default">Chọn năm</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
             </select>
         </div>
-        <div>
-            <div id="display_text">
-                <div class="display_title"> Tổng
-                    <div id="col1"></div>
-                </div>
-                <div class="display_title"> 2023
-                    <div id="col2"></div>
-                </div>
-                <div class="display_title"> 2022
-                    <div id="col3"></div>
-                </div>
+    
+        <div id="display_text">
+            <div id="col_display"></div>
+            <div id="img-box">
+                <button id="prevBtn" class="circle-button prev-button" onclick="prevImage()">←</button>
+                <img id="imgElement" src="" alt="Image display">
+                <button id="nextBtn" class="circle-button next-button" onclick="nextImage()">→</button>
             </div>
         </div>
     </div>
     <div>
-        <h1><a href="" style="text-decoration: none; color: inherit;">Ứng dụng</a></h1>
-        <form action="/analyze" method="post">
-            <button name="analyze_data" type="submit">Phân Tích Dữ Liệu</button>
-        </form>
-
-        <form action="/cluster" method="post">
-            <button name="cluster_data" type="submit">Gom Cụm Dữ Liệu</button>
-        </form>
-
-        <button onclick="showForm('predict_TH_form')">Dự Đoán Thiệt Hại</button>
-        <button onclick="showForm('predict_NN_form')">Dự Đoán Nguyên Nhân</button>
-
+        <h1><a href="/" style="text-decoration: none; color: inherit;">Ứng dụng</a></h1>
+    
+        <div class="button-container">
+            <button type="button" onclick="showForm('predict_TH_form')">Dự Đoán Thiệt Hại</button>
+            <button type="button" onclick="showForm('predict_NN_form')">Dự Đoán Nguyên Nhân</button>
+            <form action="/analyze" method="post">
+                <button name="analyze_data" type="submit">Phân Tích Dữ Liệu</button>
+            </form>
+    
+            <form action="/cluster" method="post">
+                <button name="cluster_data" type="submit">Gom Cụm Dữ Liệu</button>
+            </form>
+        </div>
+    
+        <!-- Form dự đoán thiệt hại -->
         <form id="predict_TH_form" class="predict-form hidden" action="/predict_TH" method="post">
             <h2>Dự Đoán Thiệt Hại</h2>
             <label for="Gio">Giờ:</label>
@@ -59,7 +67,8 @@
             <input type="text" id="NguyenNhan" name="NguyenNhan" required>
             <button type="submit">Dự Đoán</button>
         </form>
-
+    
+        <!-- Form dự đoán nguyên nhân -->
         <form id="predict_NN_form" class="predict-form hidden" action="/predict_NN" method="post">
             <h2>Dự Đoán Nguyên Nhân</h2>
             <label for="Gio">Giờ:</label>
@@ -74,9 +83,10 @@
             <input type="text" id="ThietHai" name="ThietHai" required>
             <button type="submit">Dự Đoán</button>
         </form>
-
-        <div id="cluster_prediction_result"></div> <!-- Khu vực hiển thị kết quả dự đoán -->
+    
+        <div id="cluster_prediction_result"></div>
     </div>
+    
     {% if result %}
     <h2>Kết Quả Phân Tích Tần Suất</h2>
     <table>
@@ -111,7 +121,7 @@
         {% endfor %}
     </ul>
     <h3>Biểu Đồ Phân Tán Các Cụm</h3>
-    <img src="data:image/png;base64,{{ plot_img }}" alt="Biểu Đồ Phân Tán">
+    <div id="img_chart"><img src="data:image/png;base64,{{ plot_img }}" alt="Biểu Đồ Phân Tán"> </div>
     {% endif %}
 
     {% if prediction_TH %}
