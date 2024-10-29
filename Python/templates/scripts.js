@@ -1,22 +1,4 @@
 
-function showPredictionForm() {
-    document.getElementById('prediction-form').style.display = 'block';
-    document.getElementById('reason-form').style.display = 'none';
-    document.getElementById('cluster-form').style.display = 'none';
-}
-
-function showReasonForm() {
-    document.getElementById('reason-form').style.display = 'block';
-    document.getElementById('prediction-form').style.display = 'none';
-    document.getElementById('cluster-form').style.display = 'none';
-}
-
-function showClusterForm() {
-    document.getElementById('cluster-form').style.display = 'block';
-    document.getElementById('prediction-form').style.display = 'none';
-    document.getElementById('reason-form').style.display = 'none';
-}
-
 function showForm(formId) {
     // Ẩn tất cả các form dự đoán
     document.querySelectorAll('.predict-form').forEach(form => form.classList.add('hidden'));
@@ -94,7 +76,7 @@ function updateDisplayText() {
                     "- Nguyên nhân gây tai nạn giao thông năm 2022 tập trung vào việc " + 
                     "không tuân thủ quy định giao thông chiếm 27% và va chạm giữa các phương tiện chiếm 26%. " + 
                     "Mất lái và không chú ý quan sát cũng là các nguyên nhân phổ biến, lần lượt chiếm 15% và 10%.<br><br>";
-                imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                imgSrcs = ["img/diadiem_2023.png", "img/diadiem_2022.png", "img/nguyennhan_2023.png", "img/nguyennhan_2022.png"];
 
                 if (selectedYear === '2023') {
                     displayText = 
@@ -111,7 +93,7 @@ function updateDisplayText() {
                         "- Thủ Đức: Là quận có số vụ tai nạn cao nhất với 12,42% tổng vụ án.<br>" +
                         "- Quốc Lộ 1 và Xa lộ Hà Nội: Các con đường lớn với mật độ giao thông cao, thường xuyên xảy ra tai nạn.<br>" +
                         "- Đường Nguyễn Văn Linh: Nơi có nhiều va chạm do sự lưu thông đông đúc.";
-                    imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                    imgSrcs = ["img/matdo_2023.png", "img/xemay_2023.png", "img/oto_2023.png", "img/xelon_2023.png"];
                 } else if (selectedYear === '2022') {
                     displayText = 
                         "**Nguyên nhân tai nạn năm 2022:**<br><br>" +
@@ -127,7 +109,7 @@ function updateDisplayText() {
                         "- Thủ Đức: Có số vụ tai nạn cao nhất với 14,24% tổng vụ án.<br>" +
                         "- Quận 7: Chỉ thua Thủ Đức 1 vụ, đặc biệt trên đường Nguyễn Văn Linh.<br>" +
                         "- Đường Phạm Văn Đồng: Cũng là điểm nóng với nhiều vụ va chạm.";
-                    imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                    imgSrcs = ["img/matdo_2022.png", "img/xemay_2022.png", "img/oto_2022.png", "img/xelon_2022.png"];
                 }
                 break;
 
@@ -139,7 +121,7 @@ function updateDisplayText() {
                     " giảm mạnh từ 3,91% xuống 1,34%.<br><br>"+
                     "- Năm 2022, nhóm tuổi 25 đến 31 gây nhiều tai nạn nhất, tiếp theo là nhóm 18 đến 24. Sau đó, tai"+
                     " nạn giảm dần ở các độ tuổi lớn hơn.";
-                imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                imgSrcs = ["img/tuoi_tong.jpg"];
 
                 if (selectedYear === '2023') {
                     displayText = 
@@ -150,7 +132,7 @@ function updateDisplayText() {
                         "- Nhóm tuổi 39 - 45: Chiếm 19,46% tổng số vụ tai nạn.<br>" +
                         "- Nhóm tuổi 46 - 52: Chiếm 4,37% tổng số vụ tai nạn.<br>" + 
                         "- Nhóm tuổi 53 trở lên: Chiếm 1,34% tổng số vụ tai nạn."; 
-                    imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                    imgSrcs = ["img/tuoi_2023.png"];
                 } else if (selectedYear === '2022') {
                     displayText = 
                         "**Tình hình tai nạn giao thông theo độ tuổi năm 2022:**<br><br>" +
@@ -160,7 +142,7 @@ function updateDisplayText() {
                         "- Nhóm tuổi 39 - 45: Chiếm 23,13% tổng số vụ tai nạn.<br>" +
                         "- Nhóm tuổi 46 - 52: Chiếm 8,19% tổng số vụ tai nạn.<br>" + 
                         "- Nhóm tuổi 53 trở lên: Chiếm 3,91% tổng số vụ tai nạn."; 
-                    imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                    imgSrcs = ["img/tuoi_2022.png"];
                 }
                 break;
 
@@ -171,7 +153,7 @@ function updateDisplayText() {
                     "- Năm 2023, tai nạn vẫn chủ yếu diễn ra vào chiều tối, nhưng buổi trưa có sự tăng nhẹ về số vụ tai nạn."+
                     " Buổi sáng có giảm nhẹ số lượng tai nạn.<br><br>"+
                     "- Năm 2022, tai nạn tập trung vào buổi chiều tối từ 12h đến 24h. Buổi sáng và buổi trưa có số lượng tai nạn ít hơn.";
-                imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                imgSrcs = ["img/thang_2023.png", "img/thang_2022.png"];
 
                 if (selectedYear === '2023') {
                     displayText = 
@@ -181,7 +163,7 @@ function updateDisplayText() {
                         "- Buổi chiều (12h - 18h): Chiếm 32,44% tổng số vụ tai nạn.<br>" +
                         "- Buổi tối (18h - 24h): Chiếm 35,49% tổng số vụ tai nạn.<br>" +
                         "- Buổi khuya (24h - 5h): Chiếm 0,57% tổng số vụ tai nạn.";
-                    imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                    imgSrcs = ["img/gio_2023.png"];
                 } else if (selectedYear === '2022') {
                     displayText = 
                         "**Tình hình tai nạn giao thông theo giờ năm 2022:**<br><br>" +
@@ -190,17 +172,24 @@ function updateDisplayText() {
                         "- Buổi chiều (12h - 18h): Chiếm 30,05% tổng số vụ tai nạn.<br>" +
                         "- Buổi tối (18h - 24h): Chiếm 37,01% tổng số vụ tai nạn.<br>" +
                         "- Buổi khuya (24h - 5h): Chiếm 0,36% tổng số vụ tai nạn.";
-                    imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                    imgSrcs = ["img/gio_2022.png"];
                 }
                 break;
             case 'hau_qua':
                 displayText = 
-                    "- Tai nạn giao thông thường xảy ra vào buổi chiều và tối, từ 12h đến 24h, đặc biệt là giờ cao điểm."+
-                    " Tai nạn ít hơn vào buổi trưa và buổi sáng.<br><br>"+
-                    "- Năm 2023, tai nạn vẫn chủ yếu diễn ra vào chiều tối, nhưng buổi trưa có sự tăng nhẹ về số vụ tai nạn."+
-                    " Buổi sáng có giảm nhẹ số lượng tai nạn.<br><br>"+
-                    "- Năm 2022, tai nạn tập trung vào buổi chiều tối từ 12h đến 24h. Buổi sáng và buổi trưa có số lượng tai nạn ít hơn.";
-                imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+                "- Sau tất cả vụ tai nạn, thiệt hại là thứ đau đớn nhất cho tất cả người liên quan." +
+                " Việc cần làm là thống kê số liệu thiệt hại để thức tỉnh ý thức của mọi người khi tham gia giao thông.<br><br>" +
+                "- Theo thống kê, năm 2022 có 349 người bị thương và 206 người tử vong do tai nạn giao thông." +
+                "- Năm 2023, số người tử vong gia tăng với 251 trường hợp và 489 người bị thương." +
+                "- Mỗi vụ tai nạn ảnh hưởng sâu sắc đến gia đình, bạn bè và cộng đồng, gây ra mất mát không thể bù đắp.<br><br>" +
+                "- Tai nạn giao thông gây tổn thất lớn về mặt kinh tế, bao gồm chi phí chữa trị, pháp lý, bồi thường, " +
+                "cùng với việc sửa chữa hoặc thay thế phương tiện hư hại. Mất đi nguồn lao động, đặc biệt là người trụ cột, " +
+                "cũng gây thiệt hại nghiêm trọng.<br><br>" +
+                "- Tai nạn thường gây ùn tắc giao thông, ảnh hưởng đến di chuyển của hàng nghìn người và làm giảm năng suất lao động. " +
+                "Sự căng thẳng, bực bội từ tình trạng ùn tắc cũng ảnh hưởng tiêu cực đến hoạt động kinh doanh.<br><br>" +
+                "- Nạn nhân và gia đình gặp phải vấn đề tâm lý nghiêm trọng như lo âu, sợ hãi, và trầm cảm, " +
+                "có thể dẫn đến hội chứng căng thẳng sau chấn thương (PTSD), ảnh hưởng đến sức khỏe tinh thần và chất lượng cuộc sống.";
+                imgSrcs = ["img/hauqua.png"];
 
                 break;
             case 'de_xuat':
@@ -214,7 +203,7 @@ function updateDisplayText() {
                 "- Điều kiện đường sá không an toàn cũng là nguyên nhân góp phần gây tai nạn, cần nâng cấp đường bộ, thiết kế lại các giao lộ và cải tiến hệ thống biển báo, đèn tín hiệu.<br><br>"+
                 "- Các công nghệ thông minh như hệ thống dự đoán và cảnh báo tai nạn dựa trên machine learning và dữ liệu thời gian thực có thể nâng cao khả năng quản lý và dự đoán tai nạn."+
                 " Triển khai ứng dụng di động để cảnh báo nguy cơ tai nạn cho người tham gia giao thông.";
-            imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
+            imgSrcs = ["img/dexuat.png"];
 
                 break;
                 
@@ -229,15 +218,15 @@ function updateDisplayText() {
     colDisplay.innerHTML = displayText ? `<p>${displayText}</p>` : 
         "<br>**Lời mở đầu:**<br><br>" +
         "- Xin chào, đây là một ứng dụng nhỏ nhằm mang đến các thông số của cá nhân về đề tài Phân tích tình trạng tai nạn giao thông " +
-        "tại TP.HCM: Nguyên nhân, hệ quả và giải pháp.<br>" +
-        "- Phạm vi thực hiện là tại địa bàn Thành phố Hồ Chí Minh năm 2022, 2023.<br>" +
-        "- Kết quả và các thông số dữ liệu đều dựa vào bộ dữ liệu thu thập từ cá nhân, mang tính tham khảo cao hơn khẳng định.<br>" +
-        "- Số liệu được thu thập và xử lý bởi Lê Chí Tài.<br>" + 
+        "tại TP.HCM: Nguyên nhân, hệ quả và giải pháp.<br><br>" +
+        "- Phạm vi thực hiện là tại địa bàn Thành phố Hồ Chí Minh năm 2022, 2023.<br><br>" +
+        "- Kết quả và các thông số dữ liệu đều dựa vào bộ dữ liệu thu thập từ cá nhân, mang tính tham khảo cao hơn khẳng định.<br><br>" +
+        "- Số liệu được thu thập và xử lý bởi Lê Chí Tài.<br><br>" + 
         "- Chúc bạn một ngày tốt lành và hãy nhớ rằng luôn nâng cao ý thức khi tham gia giao thông nhé."
 
+    imgSrcs = displayText ? imgSrcs : ["img/logo.jpg"];
     
     // Cập nhật nội dung hiển thị cho imgDiv
-    imgSrcs = ["img/9374.jpg", "img/9375.jpg", "img/9376.jpg"];
     currentImageIndex = 0;
     updateImage();
 }

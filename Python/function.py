@@ -103,38 +103,65 @@ def predict_reason(input_data):
     prediction = model_NN.predict(input_df)
     return prediction[0]
 
+# Tải mô hình đã lưu
+with open('data/model_Tuoi.pkl', 'rb') as file:
+    model_Tuoi = pickle.load(file)
 
-# Đọc mô hình và các công cụ từ file
-with open('data/model_DDC.pkl', 'rb') as file:
-    model_DDC = pickle.load(file)
-with open('data/scaler.pkl', 'rb') as file:
-    scaler = pickle.load(file)
-with open('data/label_encoders.pkl', 'rb') as file:
-    label_encoders = pickle.load(file)
-
-# Lưu thông tin cột vào file
-with open('data/columns.pkl', 'wb') as file:
-    pickle.dump(df_cleaned.columns.tolist(), file)
-
-# Lưu thông tin cột vào biến toàn cục
-columns = df_cleaned.columns.tolist()  # Đảm bảo biến columns chứa danh sách các cột
-
-# Hàm tiền xử lý dữ liệu
-def preprocess_input(input_data, encoder_dict, scaler):
-    # Chuyển đổi dữ liệu đầu vào thành DataFrame
+# Hàm dự đoán
+def predict_age(input_data):
+    """Dự đoán tuổi dựa trên dữ liệu đầu vào"""
     input_df = pd.DataFrame([input_data])
+    input_df = pd.get_dummies(input_df)
+    input_df = input_df.reindex(columns=model_Tuoi.feature_names_in_, fill_value=0)
+    prediction = model_Tuoi.predict(input_df)
+    return prediction[0]
 
-    # Sử dụng LabelEncoder để chuyển đổi các giá trị phân loại
-    for column, encoder in encoder_dict.items():
-        input_df[column] = encoder.transform(input_df[column])
+# Tải mô hình đã huấn luyện từ file
+with open('data/model_Gio.pkl', 'rb') as file:
+    model_Gio = pickle.load(file)
 
-    # Nếu cần thiết, thêm bước xử lý cho các cột còn lại, ví dụ:
-    # input_df['Gio'] = input_df['Gio'].map({'Sáng': 0, 'Trưa': 1, 'Chiều': 2, 'Tối': 3, 'Khuya': 4})
+# Lưu cột của X vào biến toàn cục
+feature_columns = model_Gio.feature_names_in_.tolist()  # Lưu trữ tên các cột cho dự đoán
 
-    # Chọn các cột cần thiết
-    # input_df = input_df[['Duong', 'Gio', 'Quan', 'Tuoi', 'ThietHai', 'NguyenNhan']]
+def predict_time(input_data):
+    """Dự đoán giờ dựa trên dữ liệu đầu vào"""
+    input_df = pd.DataFrame([input_data])
+    input_df = pd.get_dummies(input_df)
+    input_df = input_df.reindex(columns=feature_columns, fill_value=0)  # Sử dụng feature_columns
+    prediction = model_Gio.predict(input_df)
+    return prediction[0]
 
-    # Chuẩn hóa dữ liệu
-    input_scaled = scaler.transform(input_df)
+# # Đọc mô hình và các công cụ từ file
+# with open('data/model_DDC.pkl', 'rb') as file:
+#     model_DDC = pickle.load(file)
+# with open('data/scaler.pkl', 'rb') as file:
+#     scaler = pickle.load(file)
+# with open('data/label_encoders.pkl', 'rb') as file:
+#     label_encoders = pickle.load(file)
 
-    return input_df
+# # Lưu thông tin cột vào file
+# with open('data/columns.pkl', 'wb') as file:
+#     pickle.dump(df_cleaned.columns.tolist(), file)
+
+# # Lưu thông tin cột vào biến toàn cục
+# columns = df_cleaned.columns.tolist()  # Đảm bảo biến columns chứa danh sách các cột
+
+# # Hàm tiền xử lý dữ liệu
+# def preprocess_input(input_data, encoder_dict, scaler):
+#     # Chuyển đổi dữ liệu đầu vào thành DataFrame
+#     input_df = pd.DataFrame([input_data])
+
+#     # Sử dụng LabelEncoder để chuyển đổi các giá trị phân loại
+#     for column, encoder in encoder_dict.items():
+#         input_df[column] = encoder.transform(input_df[column])
+
+#     # Nếu cần thiết, thêm bước xử lý cho các cột còn lại, ví dụ:
+#     # input_df['Gio'] = input_df['Gio'].map({'Sáng': 0, 'Trưa': 1, 'Chiều': 2, 'Tối': 3, 'Khuya': 4})
+
+#     # Chọn các cột cần thiết
+#     # input_df = input_df[['Duong', 'Gio', 'Quan', 'Tuoi', 'ThietHai', 'NguyenNhan']]
+
+#     # Chuẩn hóa dữ liệu
+#     input_scaled = scaler.transform(input_df)
+
+#     return input_df
